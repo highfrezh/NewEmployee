@@ -1,0 +1,26 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+$fa-font-path: "../webfonts";
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~admin-lte/dist/css/adminlte.css';
+
+// fontawesome import
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss"; //path from node_modules by puting ~
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";        
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+
+@import '~vuetify/dist/vuetify.min.css';
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet');
+@import url('https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet');
+
+.router-link-exact-active{
+ background-color: #3f51b5;
+ color: #fff !important;
+}
