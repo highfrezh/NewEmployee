@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use APP\Models\City;
+use App\Models\City;
 
 class CityController extends Controller
 {
@@ -16,6 +16,9 @@ class CityController extends Controller
     public function index()
     {
         //
+        // $state = State::all()->country;
+        $city = City::with('state')->get();
+        return $city;
     }
 
     /**
@@ -27,6 +30,15 @@ class CityController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'state_id' => 'required|integer',
+            'name'       => 'required|string|max:191',
+        ]);
+
+        return City::create([
+            'state_id' => $request['state_id'],
+            'name'       => $request['name'],
+        ]);
     }
 
     /**
@@ -50,6 +62,14 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $state = City::findOrFail($id);
+
+        $this->validate($request, [
+            'state_id' => 'required|integer',
+            'name' => 'required|string|max:191',
+        ]);
+
+        $state->update($request->all());
     }
 
     /**
@@ -61,5 +81,10 @@ class CityController extends Controller
     public function destroy($id)
     {
         //
+        $state = City::findOrFail($id);
+
+        $state->delete();
+
+        return['message' => 'State deleted successfully'];
     }
 }

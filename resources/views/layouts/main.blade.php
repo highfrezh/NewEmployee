@@ -102,28 +102,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <!-- <router-link to="/bar">Go to Bar</router-link> -->
-                <router-link to="/Country" class="nav-link">
+                <router-link to="/country" class="nav-link">
                   <i class="fas fa-flag-checkered nav-icon teal"></i>
                   <p>Country</p>
                 </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <router-link to="/state" class="nav-link">
                   <i class="fas fa-location-arrow nav-icon teal"></i>
                   <p>State</p>
-                </a>
+                </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <router-link to="/city"  class="nav-link">
                   <i class="fas fa-city nav-icon teal"></i>
                   <p>City</p>
-                </a>
+                </router-link>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <router-link to="/department" class="nav-link">
                   <i class="fas fa-directions nav-icon teal"></i>
                   <p>Department</p>
-                </a>
+                </router-link>
               </li>
             </ul>
           </li>
@@ -187,6 +187,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <v-main class="mx-4" style="max-height: 70%">
  <dashboard></dashboard>
  <router-view></router-view>
+  <!-- set progressbar -->
+<vue-progress-bar></vue-progress-bar>
 </v-main>
 </div>
   <!--x Main content  x-->

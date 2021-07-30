@@ -21,6 +21,52 @@ import {
   AlertSuccess
 } from 'vform/src/components/bootstrap5'
 
+//Import VueProgressBar
+import VueProgressBar from 'vue-progressbar'
+
+//Import Sweetalert2
+import Swal from 'sweetalert2'
+// for global declaration i.e its accessble anywhere in the application
+window.swal = Swal;
+
+
+// sweetalert2 toaster importation
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+});
+
+//global Toast to be accessable any where in the application
+window.toast = Toast; //window.toast is use to access the the toast anywhere in the application
+
+//global Fire Vue for reloading from the database
+window.Fire = new Vue();
+
+// vue progress bar here
+const options = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '5px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+}
+
+// Telling the vue we want to use vueProgressbar
+Vue.use(VueProgressBar, options)
+
 // vform build in  components
 Vue.component(AlertSuccess.name, AlertSuccess)
 Vue.component(AlertError.name, AlertError)
@@ -31,8 +77,11 @@ Vue.use(VueRouter)
 Vue.use(Vuetify) 
 
 let routes = [
- { path: '/users', component: require('./components/Users.vue').default },
-  { path: '/country', component: require('./components/Country.vue').default }
+ { path: '/users',    component: require('./components/Users.vue').default },
+ { path: '/country',  component: require('./components/Country.vue').default },
+ { path: '/state', component: require('./components/State.vue').default },
+ { path: '/city', component: require('./components/City.vue').default },
+ { path: '/department', component: require('./components/Department.vue').default }
   
   // { path: '*', component: require('./components/NotFound.vue').default }
 ]

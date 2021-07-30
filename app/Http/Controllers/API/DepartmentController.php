@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use APP\Models\Department;
+use App\Models\Department;
 
 class DepartmentController extends Controller
 {
@@ -16,6 +16,7 @@ class DepartmentController extends Controller
     public function index()
     {
         //
+        return Department::latest()->paginate(10);
     }
 
     /**
@@ -27,6 +28,13 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'name' => 'required|string|max:191',
+        ]);
+
+        return Department::create([
+            'name'         => $request['name'],
+        ]);
     }
 
     /**
@@ -50,6 +58,12 @@ class DepartmentController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $user = Department::findOrFail($id);
+        $this->validate($request, [
+            'name'         => 'required|string|max:191',
+        ]);
+
+        $user->update($request->all());
     }
 
     /**
@@ -61,5 +75,11 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         //
+        $user = Department::findOrfail($id);
+
+        //delete country
+        $user->delete();
+
+        return['message' => 'department deleted successfully'];
     }
 }

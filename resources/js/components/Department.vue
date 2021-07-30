@@ -1,8 +1,8 @@
 <template>
 <div>
-  <v-card class="m-auto" tile max-width="80%">
+  <v-card class="m-auto" tile max-width="60%">
    <v-card-title class="py-0 mb-2">
-   <h6 class="mr-5"><span><v-icon dense>fas fa-flag-checkered</v-icon></span> COUNTRY TABLE</h6>
+   <h6 class="mr-5"><span><v-icon dense>fas fa-directions</v-icon></span> DEPARTMENT TABLE</h6>
          <v-text-field
             label="Search"
             placeholder="text"
@@ -19,10 +19,7 @@
             S/N
           </th>
           <th class="text-left">
-            COUNTRY CODE
-          </th>
-          <th class="text-left">
-           COUNTRY NAME
+           DEPARTMENT NAME
           </th>
           <th class="text-center" colspan="2">
            MODIFY
@@ -30,12 +27,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="country in countries.data" :key="country.id">
-          <td class="text-left" >{{country.id}}</td>
-          <td class="text-left" >{{country.country_code}}</td>
-          <td class="text-left" >{{country.name}}</td>
-          <td><a href="#" @click="editModal(country)"><v-icon x-small class="ml-4 text-primary">fas fa-pen</v-icon></a></td>
-          <td><a href="#" @click="deleteUser(country.id)"><v-icon x-small class="text-danger">fas fa-trash</v-icon></a></td>
+        <tr v-for="department in departments.data" :key="department.id">
+          <td class="text-left" >{{department.id}}</td>
+          <td class="text-left" >{{department.name}}</td>
+          <td><a href="#" @click="editModal(department)"><v-icon x-small class="ml-4 text-primary">fas fa-pen</v-icon></a></td>
+          <td><a href="#" @click="deleteUser(department.id)"><v-icon x-small class="text-danger">fas fa-trash</v-icon></a></td>
         </tr>
        
       </tbody>
@@ -49,7 +45,7 @@
                 <form @submit.prevent="editMode ? updateUser() : createUser()">
               <v-card>
                <v-card-title>
-                  <h5 v-show="editMode" class="modal-title" id="addNewModalLabel">Update Country Info</h5>
+                  <h5 v-show="editMode" class="modal-title" id="addNewModalLabel">Update Department</h5>
                   <h5 v-show="!editMode" class="modal-title" id="addNewModalLabel">Add New</h5>
                   <v-spacer></v-spacer>
                   <button type="button" class="btn-close red" data-dismiss="modal" aria-label="Close">&times;</button>
@@ -59,31 +55,16 @@
                    <v-row>
                  <v-col
                   cols="12"
-                  sm="6"
-                   md="4"
+                  sm="12"
+                   md="14"
                  >
                 <v-text-field
-                  label="country code"
+                  label="Department name"
                   required
                    hint="field require"
-                  v-model="form.country_code"
-                  :class="{ 'is-invalid': form.errors.has('country_code')}"
-                > </v-text-field>
-                  <HasError :form="form" field="country_code" />
-                
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="country name"
-                  hint="field require"
-                   required
-                   v-model="form.name"
+                  v-model="form.name"
                   :class="{ 'is-invalid': form.errors.has('name')}"
-                ></v-text-field>
+                > </v-text-field>
                   <HasError :form="form" field="name" />
               </v-col>
             </v-row>
@@ -110,10 +91,9 @@ import {  HasError, AlertError } from 'vform/src/components/tailwind'
 export default {
  data: () => ({
       editMode: false,
-      countries : {},
+      departments : {},
       form: new Form({
             id:       '',
-            country_code: '',
             name: ''
     })
     }),
@@ -127,7 +107,7 @@ export default {
       
     createUser () {
       this.$Progress.start() //progress bar start here
-      this.form.post('/api/country')
+      this.form.post('/api/department')
       /*
         .THEN()
         .CATCH() 
@@ -162,7 +142,7 @@ export default {
 
             // sending Request to the server
             if (result.isConfirmed) {
-              this.form.delete('api/country/'+id).then(() => {
+              this.form.delete('api/department/'+id).then(() => {
                   swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
@@ -181,7 +161,7 @@ export default {
       // Checking if the User is authorized before sendin HTTP Request
       // if (this.$gate.isAdminOrAuthor()) {
         // getting the data  from the controller using the route name (/api/user) then fetch the data to the user (this.users) object 
-        axios.get("/api/country").then(({ data }) => (this.countries = data)) 
+        axios.get("/api/department").then(({ data }) => (this.departments = data)) 
       // }
     },
      //Showing Editing User Modal Method
@@ -194,7 +174,7 @@ export default {
       // Method for Updating user to database after Edited from Edit Model
     updateUser(){
      this.$Progress.start()
-      this.form.put('api/country/'+this.form.id)
+      this.form.put('api/department/'+this.form.id)
       .then(() => {
         //success
         $('#addNew').modal('hide');

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use APP\Models\State;
+use App\Models\State;
 
 class StateController extends Controller
 {
@@ -16,6 +16,9 @@ class StateController extends Controller
     public function index()
     {
         //
+        // $state = State::all()->country;
+        $state = State::with('country')->get();
+        return $state;
     }
 
     /**
@@ -27,6 +30,15 @@ class StateController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'country_id' => 'required|integer',
+            'name'       => 'required|string|max:191',
+        ]);
+
+        return State::create([
+            'country_id' => $request['country_id'],
+            'name'       => $request['name'],
+        ]);
     }
 
     /**
@@ -50,6 +62,13 @@ class StateController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $state = State::findOrFail($id);
+        $this->validate($request, [
+            'country_id' => 'required|integer',
+            'name' => 'required|string|max:191',
+        ]);
+
+        $state->update($request->all());
     }
 
     /**
@@ -61,5 +80,10 @@ class StateController extends Controller
     public function destroy($id)
     {
         //
+        $state = State::findOrFail($id);
+
+        $state->delete();
+
+        return['message' => 'State deleted successfully'];
     }
 }

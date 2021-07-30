@@ -219,7 +219,8 @@ export default {
     methods: {
       
     createUser () {
-      //this.$Progress.start() //progress bar start here
+      this.$Progress.start() //progress bar start here
+
       this.form.post('/api/user')
       /*
         .THEN()
@@ -231,21 +232,46 @@ export default {
         Fire.$emit('ReloadUserData'); // Event listener for  sending HTTP Request to the serve
         $('#addNew').modal('hide') // hiding Modal after User Created
         // taost sweetalert2 begin here
-        /*toast.fire({
+        toast.fire({
           icon: 'success',
             title: 'User created successfully'
-          })*/
+          })
           // taost sweetalert2 finish here
-       // this.$Progress.finish();  //progress bar finish here
+        this.$Progress.finish();  //progress bar finish here
+
       })
       
       .catch(()=>{
+
       })
     },
     deleteUser(id){
-      this.form.delete('api/user/'+id).then(() => {
-        Fire.$emit('ReloadUserData');
-      })
+     swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+
+            // sending Request to the server
+            if (result.isConfirmed) {
+              this.form.delete('api/users/'+id).then(() => {
+                  swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                  )
+              Fire.$emit('ReloadUserData');
+                  }).catch(() => {
+                    swal.fire("Failed", "There is something went wrong!.", "warning");
+              });
+
+            }
+
+          })
     },
     loadUsers(){
       // Checking if the User is authorized before sendin HTTP Request
@@ -263,15 +289,22 @@ export default {
     },
       // Method for Updating user to database after Edited from Edit Model
     updateUser(){
-      this.form.put('api/users/'+this.form.id)
+      this.$Progress.start()
+      this.form.put('api/user/'+this.form.id)
       .then(() => {
         //success
         $('#addNew').modal('hide');
-        
-        Fire.$emit('ReloadUserData');
+        swal.fire(
+                    'Updated!',
+                    'Your file has been updated.',
+                    'success'
+                  )
+                  this.$Progress.finish();
+                  Fire.$emit('ReloadUserData');
+
       })
       .catch(() => {
-        // this.$Progress.fail()
+        this.$Progress.fail()
       });
     },
      // opening Modal for new  user

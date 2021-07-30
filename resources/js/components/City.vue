@@ -1,8 +1,8 @@
 <template>
 <div>
-  <v-card class="m-auto" tile max-width="80%">
+  <v-card class="m-auto" tile max-width="70%">
    <v-card-title class="py-0 mb-2">
-   <h6 class="mr-5"><span><v-icon dense>fas fa-flag-checkered</v-icon></span> COUNTRY TABLE</h6>
+   <h6 class="mr-5"><span><v-icon dense>fas fa-city</v-icon></span> CITY TABLE</h6>
          <v-text-field
             label="Search"
             placeholder="text"
@@ -19,10 +19,10 @@
             S/N
           </th>
           <th class="text-left">
-            COUNTRY CODE
+            STATE NAME
           </th>
           <th class="text-left">
-           COUNTRY NAME
+           CITY NAME
           </th>
           <th class="text-center" colspan="2">
            MODIFY
@@ -30,12 +30,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="country in countries.data" :key="country.id">
-          <td class="text-left" >{{country.id}}</td>
-          <td class="text-left" >{{country.country_code}}</td>
-          <td class="text-left" >{{country.name}}</td>
-          <td><a href="#" @click="editModal(country)"><v-icon x-small class="ml-4 text-primary">fas fa-pen</v-icon></a></td>
-          <td><a href="#" @click="deleteUser(country.id)"><v-icon x-small class="text-danger">fas fa-trash</v-icon></a></td>
+        <tr v-for="city in cities" :key="city.id">
+          <td class="text-left" >{{city.id}}</td>
+          <td class="text-left" >{{city.state.name}}</td>
+          <td class="text-left" >{{city.name}}</td>
+          <td><a href="#" @click="editModal(city)"><v-icon x-small class="ml-4 text-primary">fas fa-pen</v-icon></a></td>
+          <td><a href="#" @click="deleteUser(city.id)"><v-icon x-small class="text-danger">fas fa-trash</v-icon></a></td>
         </tr>
        
       </tbody>
@@ -49,7 +49,7 @@
                 <form @submit.prevent="editMode ? updateUser() : createUser()">
               <v-card>
                <v-card-title>
-                  <h5 v-show="editMode" class="modal-title" id="addNewModalLabel">Update Country Info</h5>
+                  <h5 v-show="editMode" class="modal-title" id="addNewModalLabel">Update City Info</h5>
                   <h5 v-show="!editMode" class="modal-title" id="addNewModalLabel">Add New</h5>
                   <v-spacer></v-spacer>
                   <button type="button" class="btn-close red" data-dismiss="modal" aria-label="Close">&times;</button>
@@ -60,31 +60,32 @@
                  <v-col
                   cols="12"
                   sm="6"
-                   md="4"
+                   md="6"
                  >
-                <v-text-field
-                  label="country code"
-                  required
-                   hint="field require"
-                  v-model="form.country_code"
-                  :class="{ 'is-invalid': form.errors.has('country_code')}"
-                > </v-text-field>
-                  <HasError :form="form" field="country_code" />
-                
+                 <label for="">State Name</label>
+                 <select class="custom-select custom-select-sm"
+                 v-model="form.state_id"
+                 :class="{ 'is-invalid': form.errors.has('state_id')}"
+                 >
+                   <option selected v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+                 </select>
+                  <HasError :form="form" field="state_id" />
+
               </v-col>
               <v-col
                 cols="12"
                 sm="6"
-                md="4"
+                md="6"
               >
-                <v-text-field
-                  label="country name"
-                  hint="field require"
-                   required
+                   <label for="">City Name</label>
+                   <input 
+                   type="text"
+                   class="form-control custom-select-sm" 
+                   :class="{ 'is-invalid': form.errors.has('name')}" 
+                   placeholder="City"
                    v-model="form.name"
-                  :class="{ 'is-invalid': form.errors.has('name')}"
-                ></v-text-field>
-                  <HasError :form="form" field="name" />
+                   >
+                    <HasError :form="form" field="name" />
               </v-col>
             </v-row>
                 </v-container>
@@ -110,10 +111,11 @@ import {  HasError, AlertError } from 'vform/src/components/tailwind'
 export default {
  data: () => ({
       editMode: false,
-      countries : {},
+      states : {},
+      cities : {},
       form: new Form({
             id:       '',
-            country_code: '',
+            state_id: '',
             name: ''
     })
     }),
@@ -127,7 +129,7 @@ export default {
       
     createUser () {
       this.$Progress.start() //progress bar start here
-      this.form.post('/api/country')
+      this.form.post('/api/city')
       /*
         .THEN()
         .CATCH() 
@@ -140,7 +142,7 @@ export default {
         // taost sweetalert2 begin here
         toast.fire({
           icon: 'success',
-            title: 'Country created successfully'
+            title: 'City created successfully'
           })
           // taost sweetalert2 finish here
        this.$Progress.finish();  //progress bar finish here
@@ -162,7 +164,7 @@ export default {
 
             // sending Request to the server
             if (result.isConfirmed) {
-              this.form.delete('api/country/'+id).then(() => {
+              this.form.delete('api/city/'+id).then(() => {
                   swal.fire(
                     'Deleted!',
                     'Your file has been deleted.',
@@ -181,7 +183,8 @@ export default {
       // Checking if the User is authorized before sendin HTTP Request
       // if (this.$gate.isAdminOrAuthor()) {
         // getting the data  from the controller using the route name (/api/user) then fetch the data to the user (this.users) object 
-        axios.get("/api/country").then(({ data }) => (this.countries = data)) 
+        axios.get("/api/city").then(({ data }) => (this.cities = data)) 
+        axios.get("/api/state").then(({ data }) => (this.states = data)) 
       // }
     },
      //Showing Editing User Modal Method
@@ -194,7 +197,7 @@ export default {
       // Method for Updating user to database after Edited from Edit Model
     updateUser(){
      this.$Progress.start()
-      this.form.put('api/country/'+this.form.id)
+      this.form.put('api/city/'+this.form.id)
       .then(() => {
         //success
         $('#addNew').modal('hide');
