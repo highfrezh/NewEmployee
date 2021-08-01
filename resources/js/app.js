@@ -81,7 +81,9 @@ let routes = [
  { path: '/country',  component: require('./components/Country.vue').default },
  { path: '/state', component: require('./components/State.vue').default },
  { path: '/city', component: require('./components/City.vue').default },
- { path: '/department', component: require('./components/Department.vue').default }
+ { path: '/department', component: require('./components/Department.vue').default },
+ { path: '/employee_create', name: "EmployeeCreate", component: require('./components/Employee/Create.vue').default },
+ { path: '/home', component: require('./components/Employee/Index.vue').default }
   
   // { path: '*', component: require('./components/NotFound.vue').default }
 ]
@@ -108,6 +110,7 @@ let vuetify = new Vuetify({
 
 
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
+// Vue.component('employee', require('./components/Employee/Index.vue').default);
 
 const app = new Vue({
     el: '#app',

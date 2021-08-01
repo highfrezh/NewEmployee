@@ -82,14 +82,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <hr class="bg-white">
           </li>
            <li class="nav-item">
-            <a href="#" class="nav-link">
+            <router-link to="/home" class="nav-link">
              <h6>
               <i class="nav-icon fas fa-user-circle"></i>
               <span>
                   Employee
               </span>
              </h6>
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">

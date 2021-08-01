@@ -186,7 +186,7 @@ export default {
       // Checking if the User is authorized before sendin HTTP Request
       // if (this.$gate.isAdminOrAuthor()) {
         // getting the data  from the controller using the route name (/api/user) then fetch the data to the user (this.users) object 
-        axios.get("/api/state").then(({ data }) => (this.states = data)) 
+        axios.get("/api/state").then(({ data }) => (this.states = data.data)) 
         axios.get("/api/country").then(({ data }) => (this.countries = data)) 
       // }
     },

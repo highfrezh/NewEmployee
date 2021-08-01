@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\StateResource;
 use Illuminate\Http\Request;
 use App\Models\State;
 
@@ -16,9 +17,9 @@ class StateController extends Controller
     public function index()
     {
         //
-        // $state = State::all()->country;
-        $state = State::with('country')->get();
-        return $state;
+        $state = State::latest()->paginate();
+        // $state = State::with('country')->get();
+        return StateResource::collection($state);
     }
 
     /**

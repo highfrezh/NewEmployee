@@ -67,7 +67,7 @@
                  v-model="form.state_id"
                  :class="{ 'is-invalid': form.errors.has('state_id')}"
                  >
-                   <option selected v-for="state in states" :key="state.id" :value="state.id">{{state.name}}</option>
+                   <option selected v-for="state in states.data" :key="state.id" :value="state.id">{{state.name}}</option>
                  </select>
                   <HasError :form="form" field="state_id" />
 
@@ -111,7 +111,7 @@ import {  HasError, AlertError } from 'vform/src/components/tailwind'
 export default {
  data: () => ({
       editMode: false,
-      states : {},
+      states : [],
       cities : {},
       form: new Form({
             id:       '',
