@@ -76,6 +76,8 @@ Vue.component(HasError.name, HasError)
 Vue.use(VueRouter) 
 Vue.use(Vuetify) 
 
+import EmployeesEdit from './components/Employee/Edit.vue'
+
 let routes = [
  { path: '/users',    component: require('./components/Users.vue').default },
  { path: '/country',  component: require('./components/Country.vue').default },
@@ -83,7 +85,12 @@ let routes = [
  { path: '/city', component: require('./components/City.vue').default },
  { path: '/department', component: require('./components/Department.vue').default },
  { path: '/employee_create', name: "EmployeeCreate", component: require('./components/Employee/Create.vue').default },
- { path: '/home', component: require('./components/Employee/Index.vue').default }
+ { path: '/home', name:"EmployeesIndex", component: require('./components/Employee/Index.vue').default },
+ { 
+   path: '/employees/:id', 
+   name:"EmployeesEdit", 
+   component: EmployeesEdit,
+  }
   
   // { path: '*', component: require('./components/NotFound.vue').default }
 ]

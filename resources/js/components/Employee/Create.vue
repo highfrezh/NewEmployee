@@ -4,7 +4,8 @@
    <v-card-title class="py-2 bg-dark">
    <h6 class="mr-5"><span><v-icon dense left class="text-white">fas fa-user</v-icon></span>CREATE EMPLOYEE</h6>
    <v-spacer></v-spacer>
-   <v-btn class="bg-success" small><router-link to="/home">BACK  <span><v-icon small dense right> fas fa-angle-left</v-icon><v-icon small dense>fas fa-angle-left</v-icon></span></router-link></v-btn>
+   <v-btn class="bg-success" small><router-link to="/home">BACK  <span><v-icon small dense right> fas fa-angle-left</v-icon>
+   <v-icon small dense>fas fa-angle-left</v-icon></span></router-link></v-btn>
    </v-card-title>
    <hr>
   <form @submit.prevent="storeEmployee">
@@ -235,82 +236,28 @@ export default {
             title: 'User created successfully'
           })
 
+          // redirecting goes here
           window.location.href = '/home';
+                  // OR
+          // this.$router.push({name: 'EmployeesIndex'});
+
           // taost sweetalert2 finish here
         this.$Progress.finish();  //progress bar finish here
 
       })
       
       .catch(()=>{
-
+        this.$Progress.fail();
       })
     },
     
     //Date format @input
     fixDate(event){
       return moment(event).format('YYYY-MM-DD');
-    },
+    }
 
-    deleteUser(id){
-     swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-          }).then((result) => {
-
-            // sending Request to the server
-            if (result.isConfirmed) {
-              this.form.delete('api/users/'+id).then(() => {
-                  swal.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                  )
-              Fire.$emit('ReloadUserData');
-                  }).catch(() => {
-                    swal.fire("Failed", "There is something went wrong!.", "warning");
-              });
-
-            }
-
-          })
-    },
-    loadUsers(){
-      // Checking if the User is authorized before sendin HTTP Request
-      // if (this.$gate.isAdminOrAuthor()) {
-        // getting the data  from the controller using the route name (/api/user) then fetch the data to the user (this.users) object 
-        axios.get("/api/user").then(({ data }) => (this.users = data)) 
-      // }
-    },
-      // Method for Updating user to database after Edited from Edit Model
-    updateUser(){
-      this.$Progress.start()
-      this.form.put('api/user/'+this.form.id)
-      .then(() => {
-        //success
-        $('#addNew').modal('hide');
-        swal.fire(
-                    'Updated!',
-                    'Your file has been updated.',
-                    'success'
-                  )
-                  this.$Progress.finish();
-                  Fire.$emit('ReloadUserData');
-
-      })
-      .catch(() => {
-        this.$Progress.fail()
-      });
-    },
-    
-    
     },
    created(){
-     this.loadUsers();
      this.getCountries();
      this.getDepartments()
      // Fire.$on send another Http request to reload the user if another user is created

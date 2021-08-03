@@ -120,7 +120,7 @@ export default {
         // taost sweetalert2 begin here
         toast.fire({
           icon: 'success',
-            title: 'Country created successfully'
+            title: 'Department created successfully'
           })
           // taost sweetalert2 finish here
        this.$Progress.finish();  //progress bar finish here
